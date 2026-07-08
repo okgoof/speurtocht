@@ -1,1 +1,1 @@
-# speurtocht
+Speurtocht GitHub Pages project.
