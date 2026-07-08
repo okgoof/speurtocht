@@ -1,1 +1,44 @@
-<!doctype html><html><body><h1>Spel 4</h1></body></html>
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spel 4 - Morsecode</title>
+<style>
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:linear-gradient(rgba(0,20,50,.75),rgba(0,20,50,.88)),radial-gradient(circle at top,#1e90ff,#07152e 65%);
+ color:white;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ min-height:100vh;
+}
+.card{
+ width:min(92%,650px);
+ background:rgba(5,20,45,.9);
+ border-radius:24px;
+ padding:30px;
+ text-align:center;
+ box-shadow:0 20px 50px rgba(0,0,0,.4);
+}
+audio{width:100%;margin-top:20px}
+h1{margin-top:0}
+.small{opacity:.8;margin-top:15px}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>📡 Spel 4 - Morsecode</h1>
+<p>Luister zo vaak als nodig naar de morsecode.</p>
+
+<audio controls preload="metadata">
+  <source src="morse.mp3" type="audio/mpeg">
+  Je browser ondersteunt geen audio.
+</audio>
+
+<p class="small">Plaats een bestand met de naam <strong>morse.mp3</strong> in deze map.</p>
+</div>
+</body>
+</html>
