@@ -1,6 +1,0 @@
-Plaats in deze map:
-- index.html (de definitieve versie)
-- muziek.mp3 (jouw muziekfragment)
-- cheer.wav
-
-Wil je liever cheer.mp3? Dan kan ik de definitieve versie met een echt stadiongejuich maken zodra we een geluidsbestand gebruiken.
