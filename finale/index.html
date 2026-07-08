@@ -1,1 +1,55 @@
-<!doctype html><html><body><h1>Finale</h1></body></html>
+<!DOCTYPE html><html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Finale</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Arial,sans-serif;color:#fff;background:linear-gradient(rgba(0,20,50,.75),rgba(0,20,50,.88)),radial-gradient(circle at top,#1e90ff,#07152e 65%);display:flex;justify-content:center;align-items:center;padding:20px}
+.card{max-width:760px;width:100%;background:rgba(5,20,45,.9);border-radius:28px;padding:30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.badge{display:inline-block;background:#fff;color:#073763;padding:8px 16px;border-radius:999px;font-weight:bold}
+input{margin-top:15px;font-size:2rem;letter-spacing:6px;text-transform:uppercase;text-align:center;padding:15px;border-radius:15px;border:none;width:320px;max-width:90%}
+button{margin-top:15px;padding:15px 28px;border:none;border-radius:999px;background:#ffe066;font-weight:bold;font-size:1rem;cursor:pointer}
+#msg{min-height:50px;font-weight:bold;margin-top:20px}
+#img{display:none;margin-top:20px}
+#img img{max-width:100%;border-radius:18px}
+.cross{display:none;color:#ff4d4d;font-size:70px}
+.confetti{position:fixed;top:-20px;width:10px;height:16px;animation:fall 2.8s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:0}}
+</style></head><body>
+<div class="card">
+<div class="badge">Finale</div>
+<h1>🏆 Nog één laatste uitdaging...</h1>
+<p>Jullie hebben onderweg alle benodigde letters verzameld.</p>
+<p><strong>Zet de verworven letters in alfabetische volgorde</strong> en voer de code hieronder in.</p>
+<p><strong>Daarna wordt onthuld waar jullie prijs zich bevindt.</strong></p>
+<audio id="cheer" src="cheer.wav"></audio>
+<input id="code" maxlength="5" placeholder="-----"><br>
+<button onclick="check()">Open finale</button>
+<div id="msg"></div>
+<div id="cross" class="cross">✖</div>
+<div id="img"><img src="eind.png" alt="Prijs"></div>
+</div>
+<script>
+const GOED="BGST!";
+function confetti(){
+const c=['#fff','#ffe066','#4dabf7','#7cff6b','#ff6b6b'];
+for(let i=0;i<120;i++){let d=document.createElement('div');d.className='confetti';d.style.left=Math.random()*100+'vw';d.style.background=c[Math.floor(Math.random()*c.length)];document.body.appendChild(d);setTimeout(()=>d.remove(),3000);}
+}
+function beep(){
+const a=new(window.AudioContext||window.webkitAudioContext)();
+for(let i=0;i<18;i++){let o=a.createOscillator(),g=a.createGain();o.frequency.value=300+Math.random()*700;o.connect(g);g.connect(a.destination);g.gain.value=.04;o.start(a.currentTime+i*.03);o.stop(a.currentTime+.5+i*.03);}
+}
+function check(){
+let v=document.getElementById('code').value.toUpperCase();
+let m=document.getElementById('msg'),x=document.getElementById('cross'),r=document.getElementById('img');
+m.innerHTML='';x.style.display='none';r.style.display='none';
+if(v===GOED){
+m.innerHTML='🎉 Gefeliciteerd! Hier bevindt zich jullie prijs!';
+m.style.color='#7CFF6B';
+confetti();
+let ch=document.getElementById('cheer');ch.currentTime=0;ch.play().catch(beep);
+r.style.display='block';
+}else{
+m.innerHTML='Onjuiste code. Probeer opnieuw.';
+m.style.color='#ff4d4d';
+x.style.display='block';
+}
+}
+</script></body></html>
