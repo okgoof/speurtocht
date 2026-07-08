@@ -1,1 +1,46 @@
-<!doctype html><html><body><h1>Spel 2</h1></body></html>
+<!DOCTYPE html><html lang='nl'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Spel 3</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(rgba(0,20,50,.75),rgba(0,20,50,.88)),radial-gradient(circle at top,#1e90ff,#07152e 65%);display:flex;justify-content:center;align-items:center;min-height:100vh;color:#fff}
+.card{background:rgba(5,20,45,.9);padding:30px;border-radius:24px;max-width:650px;width:90%;text-align:center}
+input{font-size:2rem;text-align:center;letter-spacing:8px;padding:14px;border-radius:12px}
+button{margin-top:15px;padding:14px 24px;border:none;border-radius:999px;background:#ffe066;font-weight:bold}
+#letter{display:none;width:140px;height:140px;border-radius:50%;background:#fff;color:#073763;margin:20px auto;font-size:5rem;font-weight:900;align-items:center;justify-content:center}
+</style></head><body>
+<div class='card'>
+<h1>Spel 3</h1>
+<p>Voer de 3-cijferige code in.</p>
+<audio id='cheer' src='cheer.wav' preload='auto'></audio>
+<input id='code' maxlength='3' inputmode='numeric'><br>
+<button onclick='check()'>Controleer</button>
+<div id='msg'></div>
+<div id='letter'>T</div>
+</div>
+<script>
+const GOED='550';
+function confetti(){
+ for(let i=0;i<70;i++){
+  let d=document.createElement('div');
+  d.style.position='fixed';d.style.top='-10px';d.style.left=Math.random()*100+'vw';
+  d.style.width='10px';d.style.height='16px';
+  d.style.background=['#fff','#ffe066','#4dabf7','#7cff6b','#ff6b6b'][Math.floor(Math.random()*5)];
+  d.style.transition='all 2.5s linear';
+  document.body.appendChild(d);
+  requestAnimationFrame(()=>{d.style.transform='translateY(110vh) rotate(720deg)';d.style.opacity='0';});
+  setTimeout(()=>d.remove(),2600);
+ }
+}
+function check(){
+ const v=document.getElementById('code').value.replace(/\D/g,'');
+ const l=document.getElementById('letter');
+ const m=document.getElementById('msg');
+ l.style.display='none';
+ if(v===GOED){
+   document.getElementById('cheer').play().catch(()=>{});
+   confetti();
+   m.innerHTML='🎉 Goed gedaan!';
+   l.style.display='flex';
+ }else{
+   m.innerHTML='❌ Onjuiste code. Probeer opnieuw.';
+ }
+}
+</script></body></html>
