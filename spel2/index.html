@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spel 2 - Codecontrole</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Arial, Helvetica, sans-serif;
+      color: white;
+      background:
+        linear-gradient(rgba(0, 20, 50, 0.75), rgba(0, 20, 50, 0.88)),
+        radial-gradient(circle at top, #1e90ff, #07152e 65%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow-x: hidden;
+    }
+
+    .stadium-lines {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg, transparent 48%, rgba(255,255,255,0.08) 49%, rgba(255,255,255,0.08) 51%, transparent 52%),
+        linear-gradient(0deg, transparent 48%, rgba(255,255,255,0.05) 49%, rgba(255,255,255,0.05) 51%, transparent 52%);
+      background-size: 90px 90px;
+      opacity: 0.55;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 680px;
+      background: rgba(5, 20, 45, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      background: white;
+      color: #073763;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 8px 0 10px;
+      font-size: clamp(2rem, 7vw, 3.4rem);
+      line-height: 1;
+    }
+
+    .subtitle {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      opacity: 0.95;
+      margin: 0 auto 22px;
+      max-width: 560px;
+    }
+
+    input {
+      width: 100%;
+      max-width: 240px;
+      text-align: center;
+      font-size: 2.4rem;
+      font-weight: 900;
+      letter-spacing: 10px;
+      padding: 16px;
+      border-radius: 18px;
+      border: 3px solid transparent;
+      outline: none;
+      margin: 18px 0 10px;
+    }
+
+    input:focus {
+      border-color: #ffe066;
+      box-shadow: 0 0 0 4px rgba(255,224,102,0.2);
+    }
+
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 15px 28px;
+      font-size: 1.05rem;
+      font-weight: 900;
+      cursor: pointer;
+      background: #ffe066;
+      color: #07152e;
+      box-shadow: 0 8px 0 #d5ad00;
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+      margin-top: 10px;
+    }
+
+    button:active {
+      transform: translateY(6px);
+      box-shadow: 0 2px 0 #d5ad00;
+    }
+
+    .message {
+      min-height: 70px;
+      margin-top: 24px;
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .wrong {
+      color: #ff4d4d;
+      animation: shake 0.35s ease;
+      font-size: 1.35rem;
+    }
+
+    .correct {
+      color: #7CFF6B;
+      animation: pop 0.45s ease;
+    }
+
+    .big-letter {
+      display: none;
+      margin: 18px auto 0;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: white;
+      color: #073763;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      font-weight: 1000;
+      box-shadow: 0 0 40px rgba(255,255,255,0.6);
+      animation: pop 0.55s ease;
+    }
+
+    .big-letter.show { display: flex; }
+
+    .cross {
+      display: none;
+      margin: 12px auto 0;
+      font-size: 5rem;
+      color: #ff4d4d;
+      animation: shake 0.35s ease;
+    }
+
+    .cross.show { display: block; }
+
+    .confetti {
+      position: fixed;
+      top: -20px;
+      width: 12px;
+      height: 18px;
+      opacity: 0.95;
+      z-index: 20;
+      animation: fall 2.5s linear forwards;
+    }
+
+    .footer {
+      margin-top: 22px;
+      font-size: 0.85rem;
+      opacity: 0.65;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      50% { transform: translateX(8px); }
+      75% { transform: translateX(-5px); }
+    }
+
+    @keyframes pop {
+      0% { transform: scale(0.4); opacity: 0; }
+      80% { transform: scale(1.08); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="stadium-lines"></div>
+
+  <main class="card">
+    <div class="badge">Spel 2</div>
+    <h1>Codecontrole</h1>
+
+    <p class="subtitle">
+      Voer de 3-cijferige code in. Bij een juiste code verschijnt jullie verdiende letter.
+    </p>
+
+    <audio id="cheer" src="cheer.wav" preload="auto"></audio>
+
+    <form id="codeForm" autocomplete="off">
+      <label for="codeInput"><strong>Voer de code in:</strong></label><br />
+      <input id="codeInput" name="spel2code" maxlength="3" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="000" inputmode="numeric" />
+      <br />
+      <button type="submit">Controleer code</button>
+    </form>
+
+    <div id="message" class="message"></div>
+    <div id="cross" class="cross">✖</div>
+    <div id="bigLetter" class="big-letter">T</div>
+
+    <div class="footer">Onbeperkt proberen toegestaan</div>
+  </main>
+
+  <script>
+    const CORRECT_CODE = "550";
+    const REWARD_LETTER = "T";
+
+    const form = document.getElementById("codeForm");
+    const input = document.getElementById("codeInput");
+    const message = document.getElementById("message");
+    const bigLetter = document.getElementById("bigLetter");
+    const cross = document.getElementById("cross");
+    const cheer = document.getElementById("cheer");
+
+    window.addEventListener("pageshow", () => {
+      form.reset();
+      input.value = "";
+      message.className = "message";
+      message.innerHTML = "";
+      bigLetter.classList.remove("show");
+      cross.classList.remove("show");
+    });
+
+    input.addEventListener("input", () => {
+      input.value = input.value.replace(/\D/g, "");
+    });
+
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const answer = input.value.trim();
+
+      message.className = "message";
+      bigLetter.classList.remove("show");
+      cross.classList.remove("show");
+
+      if (answer === CORRECT_CODE) {
+        message.innerHTML = "🎉 Goed gedaan! Jullie verdiende letter is:";
+        message.classList.add("correct");
+        bigLetter.textContent = REWARD_LETTER;
+        bigLetter.classList.add("show");
+        launchConfetti();
+
+        cheer.currentTime = 0;
+        cheer.play().catch(() => playCheerFallback());
+      } else {
+        message.innerHTML = "Helaas, dat is niet juist. Probeer opnieuw.";
+        message.classList.add("wrong");
+        cross.classList.add("show");
+        input.select();
+      }
+    });
+
+    function playCheerFallback() {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+      for (let i = 0; i < 18; i++) {
+        const oscillator = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        oscillator.type = "sine";
+        oscillator.frequency.setValueAtTime(250 + Math.random() * 700, audioContext.currentTime + i * 0.025);
+        gain.gain.setValueAtTime(0.04, audioContext.currentTime + i * 0.025);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 0.5 + i * 0.025);
+
+        oscillator.connect(gain);
+        gain.connect(audioContext.destination);
+
+        oscillator.start(audioContext.currentTime + i * 0.025);
+        oscillator.stop(audioContext.currentTime + 0.55 + i * 0.025);
+      }
+    }
+
+    function launchConfetti() {
+      const colors = ["#ffe066", "#ffffff", "#4dabf7", "#7CFF6B", "#ff6b6b"];
+
+      for (let i = 0; i < 90; i++) {
+        const piece = document.createElement("div");
+        piece.className = "confetti";
+        piece.style.left = Math.random() * 100 + "vw";
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.5 + "s";
+        piece.style.transform = "rotate(" + Math.random() * 360 + "deg)";
+        document.body.appendChild(piece);
+
+        setTimeout(() => piece.remove(), 3200);
+      }
+    }
+  </script>
+</body>
+</html>
